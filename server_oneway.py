@@ -15,12 +15,12 @@ serverSock.bind(('', 8080))#8080번 포트에서 모든 인터페이스에게 �
 #(1)은 해당 소켓이 몇개의 동시접속을 허용할 것인지 정함
 serverSock.listen(1)#한개의 접속만을 허용하겠다
 #accept()는 소켓에 누군가가 접속하여 연결하였을때 비로소 결과값이 return되는 함수
-#상대방이 접속함으로써 a
 connectionSock, addr = serverSock.accept()
 
 print(str(addr), '에서 접속이 확인되었습니다.')
 
 data = connectionSock.recv(1024)
+print(data)
 print('받은 데이터 : ', data.decode('utf-8'))
 
 connectionSock.send('I am a server.'.encode('utf-8'))

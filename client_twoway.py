@@ -9,32 +9,40 @@ import time
 #보내는 기능과 받는 기능을 함수로 구분
 def send(sock):
     #프로세스가 동작하는 한 스레드가 꺼지지 않게 하기 위해서 while사용
-     while True:
+    while True:
         sendData = input('>>>')
         sock.send(sendData.encode('utf-8'))
 
 def receive(sock):
     while True:
         recvData = sock.recv(1024)
-        print('상대방 : ', recvData.decode('utf-8'))
+        print('\n상대방 : ', recvData.decode('utf-8'))
+        
 
 
-port = 8081
+if __name__=="__main__":
+    port = 8081
+    Host = '127.0.0.1'
 
-clientSock = socket(AF_INET, SOCK_STREAM)
-clientSock.connect(('127.0.0.1', port))
+    clientSock = socket(AF_INET, SOCK_STREAM)
+    clientSock.connect((Host, port))
 
-print('접속 완료')
+    print('접속 완료')
 
-#스레드 생성(target = 실행할함수, args= 전달할인자)
-sender = threading.Thread(target=send, args=(clientSock,))
-receiver = threading.Thread(target=receive, args=(clientSock,))
+    #스레드 생성(target = 실행할함수, args= 전달할인자)
+    sender = threading.Thread(target=send, args=(clientSock,))
+    receiver = threading.Thread(target=receive, args=(clientSock,))
 
-#스레드 실행
-sender.start()
-receiver.start()
+    #스레드 실행
+    sender.start()
+    receiver.start()
 
-#프로그램이 꺼지지 않도록 설정
-while True:
-    time.sleep(1)#무한루프를 쉬어가게 하는 용도
-    pass
+    #sender.join()
+    #receiver.join()
+
+    #프로그램이 꺼지지 않도록
+    #while True:
+    #    time.sleep(1)#무한루프를 쉬어가게 하는 용도
+    #    pass
+        
+
